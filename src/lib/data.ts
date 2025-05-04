@@ -1,0 +1,75 @@
+import type { Project } from "@/lib/types"
+
+export const projects: Project[] = [
+  {
+    id: "project-1",
+    name: "Mood Journal App",
+    description: "A journaling app that helps users track their mood and emotions over time.",
+    status: "active",
+    progress: 65,
+    currentStep: 2,
+    lastUpdated: "2 days ago",
+    team: [
+      { name: "Priya", role: "Business Analyst", initials: "BA" },
+      { name: "Jordan", role: "Product Owner", initials: "PO" },
+      { name: "Lana", role: "UX Designer", initials: "UX" },
+      { name: "Omar", role: "Technical Architect", initials: "AR" },
+    ],
+  },
+  {
+    id: "project-2",
+    name: "Task Flow",
+    description: "A productivity tool that helps teams manage tasks and workflows.",
+    status: "planning",
+    progress: 30,
+    currentStep: 1,
+    lastUpdated: "5 days ago",
+    team: [
+      { name: "Priya", role: "Business Analyst", initials: "BA" },
+      { name: "Marcus", role: "Project Manager", initials: "PM" },
+      { name: "Nadine", role: "Scrum Master", initials: "SM" },
+    ],
+  },
+  {
+    id: "project-3",
+    name: "Health Tracker",
+    description: "An app that helps users track their health metrics and fitness goals.",
+    status: "draft",
+    progress: 10,
+    currentStep: 1,
+    lastUpdated: "1 week ago",
+    team: [
+      { name: "Jordan", role: "Product Owner", initials: "PO" },
+      { name: "Lana", role: "UX Designer", initials: "UX" },
+    ],
+  },
+  {
+    id: "project-4",
+    name: "Social Learning Platform",
+    description: "A platform for collaborative learning and knowledge sharing.",
+    status: "planning",
+    progress: 25,
+    currentStep: 1,
+    lastUpdated: "3 days ago",
+    team: [
+      { name: "Priya", role: "Business Analyst", initials: "BA" },
+      { name: "Marcus", role: "Project Manager", initials: "PM" },
+      { name: "Omar", role: "Technical Architect", initials: "AR" },
+    ],
+  },
+  {
+    id: "project-5",
+    name: "E-commerce Dashboard",
+    description: "A dashboard for managing online store operations and analytics.",
+    status: "active",
+    progress: 80,
+    currentStep: 3,
+    lastUpdated: "1 day ago",
+    team: [
+      { name: "Jordan", role: "Product Owner", initials: "PO" },
+      { name: "Lana", role: "UX Designer", initials: "UX" },
+      { name: "Omar", role: "Technical Architect", initials: "AR" },
+      { name: "Nadine", role: "Scrum Master", initials: "SM" },
+    ],
+  },
+]
