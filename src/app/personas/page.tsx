@@ -1,9 +1,17 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+"use client"
+
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Badge } from "@/components/ui/badge"
+import { Info } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { hasFullDefinition } from "@/lib/bmad/personas"
 
 export default function PersonasPage() {
+  const router = useRouter()
+
   const personas = [
     {
       id: "ba",
@@ -70,7 +78,7 @@ export default function PersonasPage() {
       image: "/placeholder-user.jpg",
     },
     {
-      id: "architect",
+      id: "ar",
       name: "Omar",
       role: "Technical Architect",
       shortCode: "AR",
@@ -103,6 +111,10 @@ export default function PersonasPage() {
     },
   ]
 
+  const handleViewPersona = (id: string) => {
+    router.push(`/personas/${id}`)
+  }
+
   return (
     <div className="flex flex-col flex-1 w-full">
       <div className="flex items-center justify-between p-6 border-b">
@@ -132,8 +144,16 @@ export default function PersonasPage() {
                         {persona.shortCode}
                       </AvatarFallback>
                     </Avatar>
-                    <div>
-                      <CardTitle>{persona.name}</CardTitle>
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between">
+                        <CardTitle>{persona.name}</CardTitle>
+                        {hasFullDefinition(persona.id) && (
+                          <Badge className="ml-2" variant="outline">
+                            <Info className="h-3 w-3 mr-1" />
+                            Defined
+                          </Badge>
+                        )}
+                      </div>
                       <CardDescription>{persona.role}</CardDescription>
                     </div>
                   </CardHeader>
@@ -152,6 +172,15 @@ export default function PersonasPage() {
                         ))}
                       </ul>
                     </div>
+                    <div className="mt-4">
+                      <Button 
+                        onClick={() => handleViewPersona(persona.id)} 
+                        variant="outline" 
+                        className="w-full"
+                      >
+                        {hasFullDefinition(persona.id) ? 'View & Chat' : 'Chat'}
+                      </Button>
+                    </div>
                   </CardContent>
                 </Card>
               ))}
@@ -161,7 +190,7 @@ export default function PersonasPage() {
           <TabsContent value="step1" className="mt-0">
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {personas
-                .filter((p) => p.id === "ba")
+                .filter((p) => ["ba", "pm", "po"].includes(p.id))
                 .map((persona) => (
                   <Card key={persona.id}>
                     <CardHeader className="flex flex-row items-center gap-4">
@@ -171,8 +200,16 @@ export default function PersonasPage() {
                           {persona.shortCode}
                         </AvatarFallback>
                       </Avatar>
-                      <div>
-                        <CardTitle>{persona.name}</CardTitle>
+                      <div className="flex-1">
+                        <div className="flex items-center justify-between">
+                          <CardTitle>{persona.name}</CardTitle>
+                          {hasFullDefinition(persona.id) && (
+                            <Badge className="ml-2" variant="outline">
+                              <Info className="h-3 w-3 mr-1" />
+                              Defined
+                            </Badge>
+                          )}
+                        </div>
                         <CardDescription>{persona.role}</CardDescription>
                       </div>
                     </CardHeader>
@@ -190,6 +227,15 @@ export default function PersonasPage() {
                             </li>
                           ))}
                         </ul>
+                      </div>
+                      <div className="mt-4">
+                        <Button 
+                          onClick={() => handleViewPersona(persona.id)} 
+                          variant="outline" 
+                          className="w-full"
+                        >
+                          {hasFullDefinition(persona.id) ? 'View & Chat' : 'Chat'}
+                        </Button>
                       </div>
                     </CardContent>
                   </Card>
@@ -200,7 +246,7 @@ export default function PersonasPage() {
           <TabsContent value="step2" className="mt-0">
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {personas
-                .filter((p) => ["po", "ux", "architect", "sm"].includes(p.id))
+                .filter((p) => ["po", "ux", "ar", "sm"].includes(p.id))
                 .map((persona) => (
                   <Card key={persona.id}>
                     <CardHeader className="flex flex-row items-center gap-4">
@@ -210,8 +256,16 @@ export default function PersonasPage() {
                           {persona.shortCode}
                         </AvatarFallback>
                       </Avatar>
-                      <div>
-                        <CardTitle>{persona.name}</CardTitle>
+                      <div className="flex-1">
+                        <div className="flex items-center justify-between">
+                          <CardTitle>{persona.name}</CardTitle>
+                          {hasFullDefinition(persona.id) && (
+                            <Badge className="ml-2" variant="outline">
+                              <Info className="h-3 w-3 mr-1" />
+                              Defined
+                            </Badge>
+                          )}
+                        </div>
                         <CardDescription>{persona.role}</CardDescription>
                       </div>
                     </CardHeader>
@@ -229,6 +283,15 @@ export default function PersonasPage() {
                             </li>
                           ))}
                         </ul>
+                      </div>
+                      <div className="mt-4">
+                        <Button 
+                          onClick={() => handleViewPersona(persona.id)} 
+                          variant="outline" 
+                          className="w-full"
+                        >
+                          {hasFullDefinition(persona.id) ? 'View & Chat' : 'Chat'}
+                        </Button>
                       </div>
                     </CardContent>
                   </Card>

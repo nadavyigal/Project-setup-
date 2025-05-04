@@ -6,16 +6,20 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Input } from "@/components/ui/input"
-import { SendHorizontal, FileText } from "lucide-react"
+import { SendHorizontal, FileText, Info } from "lucide-react"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { useParams, useRouter } from "next/navigation"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
+import PersonaDefinitionView from "@/components/persona-definition-view"
+import { getPersonaDefinition, hasFullDefinition } from "@/lib/bmad/personas"
 
 export default function PersonaPage() {
   const params = useParams()
   const router = useRouter()
   const role = params.role as string
   const [userMessage, setUserMessage] = useState("")
+  const [showDefinition, setShowDefinition] = useState(false)
 
   const personas = {
     ba: {
@@ -153,6 +157,8 @@ export default function PersonaPage() {
   }
 
   const currentPersona = personas[role as keyof typeof personas] || personas.ba
+  const personaHasDefinition = hasFullDefinition(role)
+  const personaDefinition = getPersonaDefinition(role)
 
   const handleSendMessage = () => {
     if (!userMessage.trim()) return
@@ -247,54 +253,53 @@ export default function PersonaPage() {
             </div>
           </div>
 
-          <div className="p-4">
+          <div className="p-4 space-y-3">
             <Button variant="outline" className="w-full">
               <FileText className="h-4 w-4 mr-2" />
               View Documentation
             </Button>
+            
+            {personaHasDefinition && (
+              <Dialog open={showDefinition} onOpenChange={setShowDefinition}>
+                <DialogTrigger asChild>
+                  <Button variant="outline" className="w-full">
+                    <Info className="h-4 w-4 mr-2" />
+                    View Full Definition
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-4xl h-[90vh]">
+                  {personaDefinition && <PersonaDefinitionView personaDefinition={personaDefinition} />}
+                </DialogContent>
+              </Dialog>
+            )}
           </div>
         </div>
 
         {/* Right side - Chat with persona */}
         <div className="flex flex-col h-full">
-          <div className="flex items-center p-4 border-b">
-            <Avatar className="h-8 w-8 mr-2">
-              <AvatarImage src={currentPersona.image || "/placeholder.svg"} alt={currentPersona.name} />
-              <AvatarFallback className={`bg-${currentPersona.color}-100 text-${currentPersona.color}-600`}>
-                {currentPersona.shortCode}
-              </AvatarFallback>
-            </Avatar>
-            <div>
-              <h2 className="text-sm font-medium">{currentPersona.name}</h2>
-              <p className="text-xs text-muted-foreground">{currentPersona.role}</p>
-            </div>
-          </div>
-
           <ScrollArea className="flex-1 p-4">
-            <div className="space-y-4">
-              {currentPersona.messages.map((message, i) => (
-                <div key={i} className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}>
-                  <div
-                    className={`max-w-[80%] rounded-lg p-3 ${
-                      message.role === "user" ? "bg-primary text-primary-foreground" : "bg-muted"
+            {currentPersona.messages.map((message, i) => (
+              <div key={i} className={`mb-4 ${message.role === "assistant" ? "pr-12" : "pl-12"}`}>
+                <div
+                  className={`p-3 rounded-lg ${message.role === "assistant" ? `bg-${currentPersona.color}-50 text-${currentPersona.color}-900` : "bg-muted"
                     }`}
-                  >
-                    <p className="text-sm">{message.content}</p>
-                  </div>
+                >
+                  {message.content}
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </ScrollArea>
 
           <div className="p-4 border-t">
-            <div className="flex gap-2">
+            <div className="flex space-x-2">
               <Input
                 placeholder={`Ask ${currentPersona.name} a question...`}
                 value={userMessage}
                 onChange={(e) => setUserMessage(e.target.value)}
                 onKeyDown={handleKeyDown}
+                className="flex-1"
               />
-              <Button size="icon" onClick={handleSendMessage}>
+              <Button onClick={handleSendMessage} disabled={!userMessage.trim()}>
                 <SendHorizontal className="h-4 w-4" />
               </Button>
             </div>
